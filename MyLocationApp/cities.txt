@@ -1,0 +1,65 @@
+[
+
+  {
+    "city": "Istanbul",
+    "plate": 34,
+    "latitude": 41.0082,
+    "longitude": 28.9784
+  },
+  {
+    "city": "Ankara",
+    "plate": 6,
+    "latitude": 39.9334,
+    "longitude": 32.8597
+  },
+  {
+    "city": "Izmir",
+    "plate": 35,
+    "latitude": 38.4237,
+    "longitude": 27.1428
+  },
+  {
+    "city": "Bursa",
+    "plate": 16,
+    "latitude": 40.1826,
+    "longitude": 29.0665
+  },
+  {
+    "city": "Antalya",
+    "plate": 7,
+    "latitude": 36.8969,
+    "longitude": 30.7133
+  },
+  {
+    "city": "Adana",
+    "plate": 1,
+    "latitude": 37.0016,
+    "longitude": 35.3285
+  },
+  {
+    "city": "Konya",
+    "plate": 42,
+    "latitude": 37.8739,
+    "longitude": 32.4846
+  },
+  {
+    "city": "Kayseri",
+    "plate": 38,
+    "latitude": 38.7322,
+    "longitude": 35.4800
+  },
+  {
+    "city": "Gaziantep",
+    "plate": 27,
+    "latitude": 37.0662,
+    "longitude": 37.3833
+  },
+  {
+    "city": "Sakarya",
+    "plate": 54,
+    "latitude": 40.7085,
+    "longitude": 30.4482
+  }
+]
+
+
