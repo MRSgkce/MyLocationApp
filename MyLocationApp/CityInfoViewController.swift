@@ -1,29 +1,70 @@
-//
-//  CityInfoViewController.swift
-//  MyLocationApp
-//
-//  Created by Mürşide Gökçe on 26.10.2024.
-//
+
+
 
 import UIKit
 
-class CityInfoViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
+    class CityInfoViewController: UIViewController {
+        @IBOutlet weak var cityName: UILabel!
+        @IBOutlet weak var enlem: UILabel!
+        @IBOutlet weak var boylam: UILabel!
+        @IBOutlet weak var aradakiMesafe: UILabel!
+
+        var cityInfo: City?
+        var cities: [City]?
+        var onUpdate: ((City) -> Void)?
+        var onDelete: (() -> Void)?
+
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            updateUI()
+        }
+
+        private func updateUI() {
+            // Şehir bilgileri varsa UI'yi güncelle
+            if let info = cityInfo {
+                cityName.text = info.city
+                enlem.text = String(info.latitude ?? 0.0)
+                boylam.text = String(info.longitude ?? 0.0)
+            } else {
+                print("Şehir bilgileri yok.")
+            }
+        }
+
+        @IBAction func duzenleButonu(_ sender: Any) {
+            // Geçiş yap
+            performSegue(withIdentifier: "toDuzenle", sender: nil)
+        }
     
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+        if segue.identifier == "toDuzenle" {
+            if let updateVC = segue.destination as? UpdateViewController {
+                updateVC.cityInfo = cityInfo // Buraya dikkat edin
+                updateVC.cities = cities
 
+                // Güncellenecek şehrin indeksini geç
+                if let index = cities?.firstIndex(where: { $0.city == cityInfo?.city }) {
+                    updateVC.cityIndex = index
+                }
+
+                // Geri bildirim için closure
+                updateVC.onUpdate = { [weak self] updatedCity in
+                    self?.cityInfo = updatedCity
+                    self?.updateUI()
+                    // Eğer cities dizisini güncellemek gerekiyorsa:
+                    if let index = self?.cities?.firstIndex(where: { $0.city == updatedCity.city }) {
+                        self?.cities?[index] = updatedCity
+                    }
+                }
+            } else {
+                print("Hedef ViewController UpdateViewController değil.")
+            }
+        } else {
+            print("Segue tanımlı değil veya yanlış bir tanımlama yapılmış.")
+        }
+    }
 }
+
