@@ -2,7 +2,8 @@
 
 
 import UIKit
-
+import CoreLocation
+import MapKit
 
 
     class CityInfoViewController: UIViewController {
@@ -10,6 +11,8 @@ import UIKit
         @IBOutlet weak var enlem: UILabel!
         @IBOutlet weak var boylam: UILabel!
         @IBOutlet weak var aradakiMesafe: UILabel!
+        var currentLocation: CLLocation?
+
 
         var cityInfo: City?
         var cities: [City]?
@@ -19,7 +22,20 @@ import UIKit
         override func viewDidLoad() {
             super.viewDidLoad()
             updateUI()
+            calculateDistance()
         }
+
+        private func calculateDistance() {
+            guard let cityInfo = cityInfo, let latitude = cityInfo.latitude, let longitude = cityInfo.longitude, let currentLocation = currentLocation else {
+                aradakiMesafe.text = "Mesafe hesaplanamadı"
+                return
+            }
+
+            let cityLocation = CLLocation(latitude: latitude, longitude: longitude)
+            let distanceInKilometers = currentLocation.distance(from: cityLocation) / 1000
+            aradakiMesafe.text = String(format: "%.2f km", distanceInKilometers)
+        }
+
 
         private func updateUI() {
             // Şehir bilgileri varsa UI'yi güncelle

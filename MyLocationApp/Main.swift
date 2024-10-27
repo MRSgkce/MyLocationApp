@@ -15,6 +15,8 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapV
     @IBOutlet weak var suankiEnlem: UILabel!
     @IBOutlet weak var suankiBoylam: UILabel!
     @IBOutlet weak var table: UITableView!
+    var currentLocation: CLLocation?
+
     
     var cities: [City] = []
     var locationManager = CLLocationManager()
@@ -106,18 +108,22 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapV
     // Segue ile detay sayfasına geçiş
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toDetay" {
-            if let city = sender as? City {
-                let destinationVC = segue.destination as! CityInfoViewController
+            if let (city, location) = sender as? (City, CLLocation),
+               let destinationVC = segue.destination as? CityInfoViewController {
                 destinationVC.cityInfo = city
+                destinationVC.currentLocation = location
             }
         }
     }
+
     
     // Satır seçimi ile segue başlatma
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+       
+        
         let city = cities[indexPath.row]
-        performSegue(withIdentifier: "toDetay", sender: city)
-        tableView.deselectRow(at: indexPath, animated: true)
+            performSegue(withIdentifier: "toDetay", sender: (city, currentLocation))
+            tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
@@ -164,8 +170,11 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapV
 }
 
 extension Main: CLLocationManagerDelegate {
+    
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let sonKonum = locations.last else { return }
+        currentLocation = sonKonum
         
         suankiEnlem.text = String(sonKonum.coordinate.latitude)
         suankiBoylam.text = String(sonKonum.coordinate.longitude)
